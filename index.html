@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#EF152B" />
+
+    <!-- Preconnect: Google Fonts দ্রুত লোড -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Hero banner preload — LCP দ্রুত করে -->
+    <link rel="preload" as="image" href="/hero-banner.jpg" fetchpriority="high" />
+
+    <title>Noakhali Vision| নোয়াখালী ভিশন</title>
+    <meta name="description" content="নোয়াখালী জেলার সর্বশেষ সংবাদ, ঘটনা ও তথ্য — Noakhali Vision" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Noakhali Vision | নোয়াখালী ভিশন" />
+    <meta property="og:description" content="নোয়াখালী জেলার সর্বশেষ সংবাদ" />
+    <meta property="og:image" content="/og.svg" />
+
+    <!-- Service Worker registration -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js").catch(() => {});
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
