@@ -8,7 +8,7 @@ import { useLang } from "../utils/LanguageContext";
 import { extra } from "../utils/translations";
 
 /* ─────────────────────────────────────────────────────────────────
-   Carousel — Bongo Wiki center spotlight style
+   Carousel — center spotlight style
    ───────────────────────────────────────────────────────────────── */
 function Carousel({ items }) {
   const [active, setActive] = useState(0);
@@ -222,10 +222,10 @@ export default function Home() {
           style={{ zIndex: 2, minHeight: "clamp(320px, 50vw, 560px)", paddingTop: "3rem", paddingBottom: "3rem" }}
         >
           <h1 className="text-3xl sm:text-5xl font-black mb-3 leading-tight text-white">
-            #নোয়াখালীর<span style={{ color: "#FFD0D5" }}>খবর</span>
+            #লোকাল রুট<span style={{ color: "#FFD0D5" }}>ন্যাশনাল ইমপ্যাক্ট</span>
           </h1>
           <p className="text-sm sm:text-base max-w-md mx-auto mb-8" style={{ color: "rgba(255,255,255,0.88)" }}>
-            নোয়াখালীর সকল খবর এক জায়গায় — দ্রুত, সঠিক ও বিশ্বস্ত।
+            নোয়াখালীর প্রথম AI-চালিত ডিজিটাল নিউজ প্ল্যাটফর্ম।
           </p>
           <div className="flex flex-wrap justify-center gap-3 mb-10 sm:mb-14">
             <a href="/news"
