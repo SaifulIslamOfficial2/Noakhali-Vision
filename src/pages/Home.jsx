@@ -222,7 +222,7 @@ export default function Home() {
           style={{ zIndex: 2, minHeight: "clamp(320px, 50vw, 560px)", paddingTop: "3rem", paddingBottom: "3rem" }}
         >
           <h1 className="text-3xl sm:text-5xl font-black mb-3 leading-tight text-white">
-            #লোকাল রুট<span style={{ color: "#FFD0D5" }}>ন্যাশনাল ইমপ্যাক্ট</span>
+            #লোকাল রুট<span style={{ color: "#FFD0D5" }}> ন্যাশনাল ইমপ্যাক্ট</span>
           </h1>
           <p className="text-sm sm:text-base max-w-md mx-auto mb-8" style={{ color: "rgba(255,255,255,0.88)" }}>
             নোয়াখালীর প্রথম AI-চালিত ডিজিটাল নিউজ প্ল্যাটফর্ম।
