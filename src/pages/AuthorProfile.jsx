@@ -1,0 +1,7 @@
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import api from "../utils/api";
+import { imageUrl } from "../utils/api";
+export default function AuthorProfile(){const {id}=useParams();const [data,setData]=useState(null),[error,setError]=useState("");useEffect(()=>{api.get(`/authors/${encodeURIComponent(id)}`).then(r=>setData(r.data)).catch(e=>setError(e.response?.data?.message||"লেখক পাওয়া যায়নি।"))},[id]);return <><Navbar/><main className="mx-auto min-h-[60vh] max-w-5xl px-4 py-10"><Link to="/news" className="text-sm font-bold text-primary">← সব সংবাদ</Link>{error&&<p className="mt-6">{error}</p>}{data&&<><header className="my-6 border-b border-border pb-5"><p className="text-sm font-bold uppercase text-primary">Author</p><h1 className="mt-2 text-3xl font-black">{data.author.name}</h1><p className="mt-1 text-sm text-muted">{data.author.role}</p></header><h2 className="mb-4 text-xl font-black">প্রকাশিত সংবাদ ({data.news.length})</h2><div className="grid gap-4 sm:grid-cols-2">{data.news.map(n=><Link key={n._id} to={`/news/${n.slug}`} className="flex gap-3 rounded border border-border p-3 hover:border-primary"><img src={imageUrl(n.image)} alt="" className="h-24 w-32 rounded object-cover"/><div><h3 className="font-bold leading-snug">{n.title}</h3><p className="mt-2 text-xs text-muted">{new Date(n.createdAt).toLocaleDateString("bn-BD")}</p></div></Link>)}</div></>}</main><Footer/></>}

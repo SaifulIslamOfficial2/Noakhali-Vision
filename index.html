@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0B4D35" />
+
+    <!-- Preconnect: Google Fonts দ্রুত লোড -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Hero banner preload — LCP দ্রুত করে -->
+    <link rel="preload" as="image" href="/hero-banner.jpg" fetchpriority="high" />
+
+    <title>Noakhali Vision| নোয়াখালী ভিশন</title>
+    <meta name="description" content="নোয়াখালী জেলার সর্বশেষ সংবাদ, ঘটনা ও তথ্য — Noakhali Vision" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Noakhali Vision | নোয়াখালী ভিশন" />
+    <meta property="og:description" content="নোয়াখালী জেলার সর্বশেষ সংবাদ" />
+    <meta property="og:image" content="https://noakhalivision.com/hero-banner.jpg" />
+
+    <!-- Service Worker registration -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js").catch(() => {});
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"><div id="nv-boot" style="position:fixed;inset:0;display:grid;place-items:center;background:#F8F9F8"><span style="position:relative;display:inline-grid;place-items:center;width:64px;height:64px"><span style="position:absolute;inset:0;border-radius:50%;border:4px solid rgba(85,181,46,.22);border-top-color:#55B52E;border-right-color:#0B4D35;animation:nvbootspin .9s linear infinite"></span><svg viewBox="0 0 512 512" width="40" height="40" style="border-radius:18%"><rect width="512" height="512" rx="60" fill="#073B2A"/><path d="M0 0 512 512H0Z" fill="#55B52E"/></svg></span><style>@keyframes nvbootspin{to{transform:rotate(360deg)}}</style></div></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
