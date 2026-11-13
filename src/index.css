@@ -1,0 +1,1383 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  max-width: 100vw;
+  overflow-x: hidden;
+  color: var(--ink, #202820);
+  transition: background-color .25s ease, color .25s ease;
+  font-family:"Hind Siliguri", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { text-decoration: none; color: inherit; }
+input, textarea, button { font-family: inherit; }
+
+/* Masonry grid */
+.masonry { columns: 1; column-gap: 12px; }
+.masonry-item { break-inside: avoid; margin-bottom: 12px; }
+
+@media (min-width: 480px) {
+  .masonry { columns: 2; column-gap: 16px; }
+  .masonry-item { margin-bottom: 16px; }
+}
+@media (min-width: 1024px) {
+  .masonry { columns: 3; column-gap: 20px; }
+  .masonry-item { margin-bottom: 20px; }
+}
+
+.focus-ring:focus { outline: 2px solid var(--brand-secondary); outline-offset: 2px; }
+.font-kalpurush { font-family:"Hind Siliguri", sans-serif; }
+
+/* Touch-friendly minimum tap size */
+@media (max-width: 640px) {
+  button, a[href] { min-height: 40px; }
+}
+
+/* Safe area for devices with notch */
+@supports (padding: max(0px)) {
+  .safe-bottom { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+}
+
+/* ─── Global design tokens: Noakhali Vision two-color identity ─── */
+:root {
+  --brand-primary: #0B4D35;
+  --brand-primary-strong: #073B2A;
+  --brand-secondary: #55B52E;
+  --brand-secondary-soft: #EAF6E4;
+  --bg: #FFFFFF;
+  --bg2: rgba(235, 240, 250, 0.82);
+  --ink: #1c1f1d;
+  --muted: #4a4f4c;
+  --border: rgba(0, 0, 0, .09);
+  --card: rgba(235, 240, 250, 0.82);
+  --brand-hover: #073B2A;
+  --focus-ring: rgba(85, 181, 46, .35);
+  color-scheme: light;
+}
+
+
+
+
+/* Compatibility aliases for existing components */
+:root {
+  --brand-forest: var(--brand-primary-strong);
+  --brand-lime: var(--brand-secondary);
+  --brand-light: var(--brand-secondary-soft);
+}
+::selection { background: var(--brand-secondary); color: var(--brand-primary-strong); }
+
+/* Consistent motion and interactions across all routes */
+:where(a, button, input, textarea, select, [role="button"]) {
+  -webkit-tap-highlight-color: transparent;
+}
+:where(button, a, input, textarea, select, [role="button"]):focus-visible {
+  outline: 2px solid var(--brand-secondary);
+  outline-offset: 3px;
+}
+:where(button, a, [role="button"]) {
+  transition: color .2s ease, background-color .2s ease, border-color .2s ease,
+    box-shadow .2s ease, transform .2s ease, opacity .2s ease;
+}
+:where(button:not(:disabled), [role="button"]):active {
+  transform: translateY(1px);
+}
+:where(a[href]):hover {
+  text-decoration-color: var(--brand-secondary);
+}
+.ui-card, .news-editorial-card {
+  transition: transform .24s ease, box-shadow .24s ease, border-color .24s ease;
+}
+.ui-card:hover, .news-editorial-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .06);
+}
+.news-editorial-card img {
+  transition: transform .45s cubic-bezier(.2,.7,.2,1);
+}
+.news-editorial-card:hover img { transform: scale(1.035); }
+.election-reveal, .section-reveal {
+  animation: nvFadeUp .55s cubic-bezier(.2,.7,.2,1) both;
+}
+@keyframes nvFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Premium global interaction system */
+:root {
+  --brand-primary-rgb: 11, 77, 53;
+  --brand-secondary-rgb: 85, 181, 46;
+  --brand-primary-hover: #073B2A;
+  --brand-secondary-hover: #469923;
+  --surface-shadow: none;
+  --surface-shadow-hover: 0 6px 18px rgba(0, 0, 0, .06);
+}
+
+
+.page-enter {
+  animation: nvPageEnter .32s ease-out both;
+}
+@keyframes nvPageEnter {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.brand-button {
+  transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.brand-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.brand-button:active:not(:disabled) { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .ui-card:hover, .news-editorial-card:hover { transform: none; }
+}
+
+
+/* ═══════════════ News page (nvn-) ═══════════════ */
+.nvn-accent { color: var(--brand-primary); }
+
+/* staggered entrance */
+.nvn-rise { animation: nvnRise .6s cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--d, 0ms); }
+@keyframes nvnRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* subtle image zoom */
+.nvn-zoom .nvn-img { transition: transform .7s cubic-bezier(.2,.7,.2,1), filter .4s ease;  }
+.group:hover .nvn-zoom .nvn-img { transform: scale(1.07); filter: saturate(1.08); }
+
+/* headline: green underline slides in on hover */
+.nvn-title {
+  background-image: linear-gradient(var(--brand-secondary), var(--brand-secondary));
+  background-repeat: no-repeat; background-position: 0 100%; background-size: 0% 2px;
+  transition: background-size .45s cubic-bezier(.2,.7,.2,1), color .25s ease;
+  padding-bottom: 1px;
+}
+.group:hover .nvn-title { background-size: 100% 2px; color: var(--brand-primary); }
+
+.nvn-more svg, .nvn-foot .nvn-arrow { transition: transform .3s ease; }
+.group:hover .nvn-more svg, .nvn-more:hover svg, .nvn-foot:hover .nvn-arrow { transform: translateX(5px); }
+.nvn-foot { transition: background-color .25s ease, color .25s ease; }
+.nvn-foot:hover { background: var(--bg2); color: var(--brand-primary); }
+
+/* category tabs — text style with hairline separators and a growing underline */
+.nvn-tab { position: relative; color: var(--muted); background: none; border: 0; cursor: pointer; transition: color .25s ease; }
+.nvn-tab + .nvn-tab::before { content: ""; position: absolute; left: 0; top: 50%; height: 14px; width: 1px; background: var(--border); transform: translateY(-50%); }
+.nvn-tab::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: 0; height: 2px; background: var(--brand-secondary); transform: scaleX(0); transform-origin: left; transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.nvn-tab:hover { color: var(--brand-primary); }
+.nvn-tab:hover::after { transform: scaleX(.55); }
+.nvn-tab-on { color: var(--brand-primary); }
+.nvn-tab-on::after { transform: scaleX(1); }
+
+/* ═══════════════ Shared search control (.nv-search) ═══════════════
+   One bordered shell owns border, radius, height and focus ring.
+   The <input> inside is borderless/outline-free, so there is never a
+   second outline. Icon, input, clear and submit are flex siblings, so
+   nothing is absolutely positioned or relies on magic padding.
+   Focus ring is inset (border + inset shadow) so it can never be
+   clipped by, or spill out of, the parent container.            */
+:root {
+  --nv-control-h: 44px;
+  --nv-control-radius: 6px;
+  --nv-control-pad: 12px;
+}
+.nv-search {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: var(--nv-control-h);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--nv-control-radius);
+  background: var(--card);
+  color: var(--ink);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.nv-search:hover { border-color: color-mix(in srgb, var(--brand-secondary) 55%, var(--border)); }
+.nv-search:focus-within {
+  border-color: var(--brand-secondary);
+  box-shadow: inset 0 0 0 1px var(--brand-secondary);
+}
+.nv-search__icon {
+  flex: none;
+  align-self: center;
+  margin-inline-start: var(--nv-control-pad);
+  color: var(--muted);
+  pointer-events: none;
+}
+.nv-search:focus-within .nv-search__icon { color: var(--brand-primary); }
+.nv-search__input,
+.nv-search__input:focus,
+.nv-search__input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.nv-search__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0 var(--nv-control-pad) 0 10px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 14px;
+  line-height: normal;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.nv-search__input::placeholder { color: var(--muted); opacity: .85; }
+.nv-search__input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.nv-search__clear {
+  flex: none;
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  min-height: 0;
+  margin-inline-end: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.nv-search__clear:hover { color: var(--ink); background: var(--bg2); }
+.nv-search__btn {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  height: auto;
+  margin: 0;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 0;
+  background: var(--brand-primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight:700;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .2s ease;
+}
+.nv-search__btn:hover { background: var(--brand-primary-strong); }
+.nv-search__btn:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+/* on the green Premium Directory hero */
+.nv-search--onbrand {
+  border-color: rgba(255,255,255,.25);
+  background: rgba(255,255,255,.10);
+  color: #fff;
+}
+.nv-search--onbrand:hover { border-color: rgba(255,255,255,.45); }
+.nv-search--onbrand .nv-search__icon,
+.nv-search--onbrand:focus-within .nv-search__icon { color: rgba(255,255,255,.7); }
+.nv-search--onbrand .nv-search__input::placeholder { color: rgba(255,255,255,.6); }
+.nv-search--onbrand:focus-within { border-color: var(--brand-secondary); box-shadow: inset 0 0 0 1px var(--brand-secondary); }
+/* admin pages are always light-surfaced slate; keep control on the same tokens */
+.nv-select {
+  height: var(--nv-control-h);
+  min-width: 0;
+  max-width: 100%;
+  padding: 0 var(--nv-control-pad);
+  border: 1px solid var(--border);
+  border-radius: var(--nv-control-radius);
+  background-color: var(--card);
+  color: var(--ink);
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.nv-select:hover { border-color: color-mix(in srgb, var(--brand-secondary) 55%, var(--border)); }
+.nv-select:focus,
+.nv-select:focus-visible {
+  outline: none;
+  border-color: var(--brand-secondary);
+  box-shadow: inset 0 0 0 1px var(--brand-secondary);
+}
+/* ≥16px on phones stops iOS Safari zooming the page on focus */
+@media (max-width: 640px) {
+  .nv-search__input, .nv-select { font-size: 16px; }
+  .nv-search__btn { padding: 0 14px; }
+}
+
+/* buttons */
+.nvn-btn { transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease, color .25s ease, border-color .25s ease; }
+.nvn-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.nvn-loadmore:hover:not(:disabled) { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; }
+.nvn-shuffle svg { transition: transform .45s ease; }
+.nvn-shuffle:hover svg { transform: rotate(180deg); }
+
+/* trending topics */
+.nvn-topic { transition: padding-left .3s ease, color .25s ease; }
+.nvn-topic:hover { padding-left: 6px; color: var(--brand-primary); }
+.nvn-topic-on { color: var(--brand-primary); }
+.nvn-topic-on span:first-child { color: var(--brand-secondary); }
+
+/* advertisement frame with "AD" tag */
+.nvn-adwrap { position: relative; }
+.nvn-adwrap > section { margin: 0; }
+.nvn-adwrap > section > div:first-child { display: none; }
+.nvn-adtag { position: absolute; right: 8px; top: 8px; z-index: 2; background: rgba(7,59,42,.85); color: #fff; font-size: 10px; font-weight:700; letter-spacing: .08em; padding: 2px 8px; border-radius: 999px; pointer-events: none; }
+.nvn-adwrap:not(:has(img)) .nvn-adtag { display: none; }
+
+/* sidebar brand card */
+.nvn-brand { background: linear-gradient(135deg, #073B2A 0%, #0B4D35 55%, #2f8a34 100%); box-shadow: 0 10px 28px rgba(7,59,42,.18); }
+.nvn-brand::after { content: ""; position: absolute; right: -40px; top: -40px; width: 140px; height: 140px; border-radius: 999px; border: 22px solid rgba(255,255,255,.07); }
+
+/* loading shimmer */
+.nvn-shimmer { background: linear-gradient(90deg, var(--bg2) 25%, var(--border) 50%, var(--bg2) 75%); background-size: 200% 100%; animation: nvnShimmer 1.3s linear infinite; border-radius: 2px; }
+@keyframes nvnShimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .nvn-rise, .nvn-shimmer { animation: none !important; }
+  .nvn-zoom .nvn-img, .group:hover .nvn-zoom .nvn-img { transform: none !important; }
+  .nvn-btn:hover:not(:disabled), .nvn-topic:hover { transform: none; padding-left: 0; }
+}
+
+/* ═══════════════ Brand loading spinner (Spinner.jsx) ═══════════════ */
+.nv-spinner { position: relative; display: inline-grid; place-items: center; flex: none; vertical-align: middle; }
+.nv-spinner__ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: max(2px, 6%) solid rgba(85, 181, 46, .22);
+  border-top-color: var(--brand-secondary);
+  border-right-color: var(--brand-primary);
+  animation: nvSpin .9s linear infinite;
+}
+.nv-spinner__icon { width: 62%; height: 62%; border-radius: 18%; animation: nvPulse 1.8s ease-in-out infinite; }
+.nv-spinner--light .nv-spinner__ring { border-color: rgba(255,255,255,.25); border-top-color: #fff; border-right-color: var(--brand-secondary); }
+.nv-pageloader { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; width: 100%; min-height: 40vh; padding: 48px 16px; }
+.nv-pageloader--full { position: fixed; inset: 0; z-index: 100; min-height: 0; background: var(--bg); }
+.nv-pageloader__label { margin: 0; font-size: 14px; font-weight: 600; color: var(--muted); }
+@keyframes nvSpin { to { transform: rotate(360deg); } }
+@keyframes nvPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(.88); } }
+@media (prefers-reduced-motion: reduce) {
+  .nv-spinner__ring { animation-duration: 2.4s !important; animation-iteration-count: infinite !important; }
+  .nv-spinner__icon { animation: none !important; }
+}
+
+/* ═══════════════ Site-wide noise grain ═══════════════
+   Two tiny seamless SVG-noise tiles (<1.5 KB each, no network request) with
+   non-matching sizes (300px / 197px) so the combined pattern only repeats
+   every ~59,000px — no visible tiling. Low-alpha gray specks on #F8F9F8.
+   Page wrappers are transparent so one texture covers every route;
+   cards stay solid white for readability.                              */
+:root {
+  --nv-grain-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .38 0 0 0 0 .36 0 0 0 .5 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --nv-grain-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='197' height='197'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='1' seed='23' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .42 0 0 0 0 .4 0 0 0 .4 -.17'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* opaque surfaces that must still carry the texture (sticky header, sidebars, drawers) */
+.nv-grain {
+  background-color: var(--bg);
+  background-image: var(--nv-grain-a), var(--nv-grain-b);
+  background-size: 300px 300px, 197px 197px;
+  background-position: 0 0, 83px 41px;
+}
+
+
+/* Responsive editorial hero carousel: portrait photocard on phones, landscape spotlight on desktop. */
+.nv-home-carousel { height: clamp(220px, 34vw, 400px); }
+.nv-home-carousel-card {
+  height: 90%;
+  aspect-ratio: 4 / 5; /* পোর্ট্রেট নিউজ কার্ড (880×1100) */
+  transform: translateX(var(--slide-offset)) scale(var(--slide-scale));
+}
+.nv-carousel-arrow {
+  width: 42px; height: 42px; min-width: 42px; min-height: 42px;
+  border: 2px solid rgba(255,255,255,.95); border-radius: 9999px;
+  color: #073B2A; background: #B5F08A; box-shadow: 0 4px 16px rgba(0,0,0,.32);
+}
+.nv-carousel-arrow:hover { background: #fff; }
+@media (max-width: 639px) {
+  .nv-home-carousel { height: clamp(320px, 108vw, 440px); }
+  .nv-home-carousel-card { width: min(70vw, 320px); height: auto; aspect-ratio: 4 / 5; }
+  .nv-home-carousel-card[style*="--slide-offset: -200"],
+  .nv-home-carousel-card[style*="--slide-offset: 200"] { opacity: 0 !important; pointer-events: none; }
+  .nv-carousel-arrow { width: 36px; height: 36px; min-width: 36px; min-height: 36px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NOAKHALI VISION — premium editorial front page treatment
+   Original composition inspired by independent newspaper layouts.
+   ═══════════════════════════════════════════════════════════════ */
+.nv-editorial-frontpage { background:#f4f4f1; color:#101820; padding:clamp(28px,5vw,68px) max(18px,calc((100vw - 1240px)/2)); }
+.nv-editorial-kicker { display:flex; justify-content:space-between; gap:12px; border-top:1px solid #17202a; border-bottom:1px solid #c9ceca; padding:11px 0; margin-bottom:18px; color:#52605b; font:700 10px/1.2 "Hind Siliguri", sans-serif; letter-spacing:.18em; }
+.nv-editorial-lead { display:block; position:relative; isolation:isolate; overflow:hidden; min-height:clamp(360px,48vw,620px); background:#061421; color:#fff; }
+.nv-editorial-lead > img { position:absolute; inset:0; z-index:-2; width:100%; height:100%; object-fit:cover; object-position:center; transition:transform .8s cubic-bezier(.2,.7,.2,1); }
+.nv-editorial-lead:hover > img { transform:scale(1.025); }
+.nv-editorial-shade { position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg,rgba(2,10,18,.86) 0%,rgba(2,10,18,.48) 48%,rgba(2,10,18,.08) 100%),linear-gradient(0deg,rgba(2,10,18,.68),transparent 60%); }
+.nv-editorial-lead-copy { position:absolute; left:clamp(22px,6vw,76px); bottom:clamp(28px,6vw,68px); max-width:min(760px,82%); }
+.nv-editorial-tag { display:inline-flex; padding:6px 10px; background:var(--brand-secondary); color:#092b20; font:700 10px/1 "Hind Siliguri", sans-serif; letter-spacing:.13em; text-transform:uppercase; }
+.nv-editorial-lead-copy h2 { margin:16px 0 14px; font-family:"Hind Siliguri", sans-serif; font-size:clamp(30px,5.1vw,66px); line-height:1.06; font-weight:700; letter-spacing:0; text-wrap:balance; }
+.nv-editorial-lead-copy p { display:flex; align-items:center; gap:10px; font-size:13px; font-weight:700; letter-spacing:.04em; color:#c7f1a9; }
+.nv-editorial-lower { padding-top:34px; }
+.nv-editorial-section-title { display:flex; justify-content:space-between; align-items:end; gap:16px; border-top:3px solid #111b21; padding-top:12px; margin-bottom:20px; }
+.nv-editorial-section-title h2 { font-family:"Hind Siliguri", sans-serif; font-size:clamp(27px,4vw,42px); font-weight:700; letter-spacing:0; line-height:1; }
+.nv-editorial-section-title a { color:var(--brand-primary); font:700 10px/1 "Hind Siliguri", sans-serif; letter-spacing:.13em; white-space:nowrap; }
+.nv-editorial-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+.nv-editorial-card { display:grid; grid-template-columns:minmax(110px,.9fr) minmax(0,1.1fr); gap:15px; align-items:start; border-top:1px solid #bfc7c2; padding-top:15px; min-width:0; }
+.nv-editorial-card-image { overflow:hidden; aspect-ratio:4/5; background:#e2e6e2; }
+.nv-editorial-card-image img { width:100%; height:100%; object-fit:cover; transition:transform .6s ease; }
+.nv-editorial-card:hover .nv-editorial-card-image img { transform:scale(1.05); }
+.nv-editorial-card-copy span { display:block; margin:2px 0 8px; color:var(--brand-primary); font:700 9px/1.3 "Hind Siliguri", sans-serif; letter-spacing:.12em; text-transform:uppercase; }
+.nv-editorial-card-copy h3 { font-family:"Hind Siliguri", sans-serif; font-size:clamp(15px,1.3vw,18px); font-weight:700; line-height:1.3; color:#101820; }
+.nv-editorial-card-copy p { margin-top:12px; font:700 10px/1 "Hind Siliguri", sans-serif; letter-spacing:.08em; color:#66716b; text-transform:uppercase; }
+
+/* Article page: headline-led newspaper hierarchy and original 4:5 graphic ratio */
+.nv-article-masthead { border-top:4px solid #111b21; padding-top:14px; margin-bottom:16px; }
+.nv-article-kicker { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:13px; color:var(--brand-primary); font:700 10px/1.2 "Hind Siliguri", sans-serif; letter-spacing:.15em; text-transform:uppercase; }
+.nv-article-kicker span:first-child { background:var(--brand-secondary); color:#082d20; padding:6px 9px; }
+.nv-article-masthead h1 { max-width:1000px; font-family:"Hind Siliguri", sans-serif; font-size:clamp(20px,2.3vw,28px); line-height:1.25; font-weight:700; letter-spacing:0; color:#101820; }
+.nv-article-byline { display:flex; flex-wrap:nowrap; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; padding:8px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); margin-top:16px; color:#6b746e; font-size:12px; }
+.nv-article-byline a { color:var(--brand-primary); }
+.nv-article-hero { margin:0; background:#e8ece8; }
+.nv-article-hero img { display:block; width:100%; height:auto; max-height:1100px; object-fit:cover; aspect-ratio:16/9; background:#e8ece8; }
+.nv-article-hero figcaption { padding:8px 2px; color:#727b75; font-size:11px; border-bottom:1px solid var(--border); }
+
+@media(max-width:900px) {
+ .nv-editorial-grid { grid-template-columns:1fr 1fr; }
+ .nv-editorial-card:last-child { display:none; }
+}
+@media(max-width:640px) {
+ .nv-editorial-frontpage { padding:26px 14px 32px; }
+ .nv-editorial-kicker { font-size:8px; letter-spacing:.12em; }
+ .nv-editorial-lead { min-height:clamp(420px,130vw,560px); }
+ .nv-editorial-lead > img { object-position:center; }
+ .nv-editorial-shade { background:linear-gradient(0deg,rgba(2,10,18,.92) 0%,rgba(2,10,18,.38) 54%,rgba(2,10,18,.05) 100%); }
+ .nv-editorial-lead-copy { left:18px; right:18px; bottom:25px; max-width:none; }
+ .nv-editorial-lead-copy h2 { font-size:clamp(29px,9vw,42px); line-height:1.12; }
+ .nv-editorial-section-title h2 { font-size:29px; }
+ .nv-editorial-grid { grid-template-columns:1fr; gap:0; }
+ .nv-editorial-card, .nv-editorial-card:last-child { display:grid; grid-template-columns:116px minmax(0,1fr); gap:14px; padding:14px 0; border-top:1px solid #c9ceca; }
+ .nv-editorial-card-image { aspect-ratio:4/5; }
+ .nv-editorial-card-copy h3 { font-size:16px; line-height:1.32; }
+ .nv-editorial-card-copy p { margin-top:7px; }
+ .nv-article-masthead { padding-top:13px; margin-bottom:16px; }
+ .nv-article-masthead h1 { font-size:clamp(20px,5.2vw,23px); line-height:1.28; }
+ .nv-article-hero img { aspect-ratio:16/9; }
+}
+
+/* Newspaper-style featured story on the News index */
+.nvn-featured-story { padding-top:18px; }
+.nvn-featured-story > a { align-items:stretch; }
+.nvn-featured-story .nvn-zoom { width:min(42%,420px); height:auto; aspect-ratio:4/5; }
+.nvn-featured-story .nvn-title { font-size:clamp(20px,2.2vw,28px); line-height:1.25; font-weight:700; letter-spacing:0; }
+.nvn-featured-story .nvn-zoom img { object-fit:cover; }
+@media(max-width:767px) {
+ .nvn-featured-story .nvn-zoom { width:100%; height:auto; aspect-ratio:4/5; }
+ .nvn-featured-story .nvn-title { font-size:clamp(20px,5.6vw,24px); line-height:1.3; }
+}
+
+
+/* ── Full-frame newsroom photocard rendering: never crop the source ── */
+.nv-home-carousel { height: clamp(390px, 42vw, 520px); }
+.nv-home-carousel-card {
+  width: min(26vw, 330px);
+  aspect-ratio: 4 / 5;
+  background: #f1f2ef;
+}
+.nv-home-carousel-card > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover !important;
+  object-position: center;
+  background: #f1f2ef;
+}
+.nv-editorial-card-image img,
+.nvn-img,
+.nv-article-hero img,
+.nv-article-gallery img,
+.nv-related-thumb img {
+  object-fit: contain !important;
+  object-position: center;
+  background: #f1f2ef;
+}
+
+/* Homepage lead: editorial magazine split layout, like the supplied second reference.
+   The original 4:5 artwork remains completely visible on the left; headline sits beside it. */
+.nv-editorial-lead {
+  display: grid !important;
+  grid-template-columns: minmax(280px, 44%) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+  min-height: 0 !important;
+  padding: clamp(18px, 2.6vw, 34px);
+  background: #fff;
+  color: #101820;
+  border: 1px solid #d9ded9;
+  text-decoration: none;
+}
+.nv-editorial-lead-image {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  background: #f1f2ef;
+  overflow: hidden;
+}
+.nv-editorial-lead-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 680px;
+  object-fit: contain !important;
+  object-position: center;
+  transition: transform .45s ease;
+}
+.nv-editorial-lead:hover .nv-editorial-lead-image img { transform: scale(1.015); }
+.nv-editorial-lead-copy {
+  position: static !important;
+  z-index: auto;
+  max-width: none !important;
+  padding: clamp(10px, 2vw, 28px) 0;
+  color: #101820;
+}
+.nv-editorial-lead-copy h2 {
+  margin: 18px 0 18px;
+  color: #101820;
+  font-family:"Hind Siliguri", sans-serif;
+  font-size: clamp(24px, 3vw, 40px);
+  font-weight:700;
+  line-height: 1.2;
+  letter-spacing:0;
+}
+.nv-editorial-lead-copy p {
+  display: block;
+  max-width: 640px;
+  color: #56615c;
+  font-family:"Hind Siliguri", sans-serif;
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.75;
+  font-weight: 500;
+}
+.nv-editorial-lead-copy .nv-editorial-tag {
+  background: var(--brand-secondary);
+  color: #092b20;
+}
+.nv-editorial-read {
+  display: inline-block;
+  margin-top: 24px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--brand-primary);
+  color: var(--brand-primary);
+  font:700 10px/1 "Hind Siliguri", sans-serif;
+  letter-spacing: .13em;
+}
+.nv-editorial-shade { display: none !important; }
+
+/* Round reporter identity beside the article byline */
+.nv-author-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--brand-primary);
+  text-decoration: none;
+}
+.nv-author-chip > img {
+  display: block;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: #eef1ed;
+}
+.nv-author-fallback {
+  display: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand-primary);
+  color: #fff;
+  font-weight:700;
+}
+.nv-author-copy { display: grid; gap: 1px; line-height: 1.2; }
+.nv-author-copy small { color: #77817b; font-size: 10px; }
+.nv-author-copy strong { color: var(--brand-primary); font-size: 12px; }
+
+@media (max-width: 639px) {
+  .nv-home-carousel { height: clamp(390px, 118vw, 480px); }
+  .nv-home-carousel-card { width: min(74vw, 330px); aspect-ratio: 4 / 5; }
+  .nv-editorial-lead {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 12px;
+  }
+  .nv-editorial-lead-image { width: 100%; }
+  .nv-editorial-lead-image img { width: 100%; max-height: none; }
+  .nv-editorial-lead-copy { padding: 18px 5px 10px; }
+  .nv-editorial-lead-copy h2 { margin: 12px 0; font-size: clamp(22px, 6.5vw, 28px); }
+  .nv-editorial-lead-copy p { font-size: 15px; }
+}
+
+@media (max-width: 639px) {
+  .nv-home-carousel .nv-carousel-arrow,
+  .nv-home-carousel .nv-carousel-arrow[aria-label] {
+    display: none !important;
+  }
+}
+
+/* byline: প্রকাশক (ছবি + নাম) বামে, তারিখ ডানে — একই লাইনে */
+.nv-article-byline > span[aria-hidden] { display:none; }
+.nv-article-byline time { margin-left:auto; text-align:right; white-space:nowrap; font-size:12px; }
+.nv-article-byline .nv-author-chip { min-width:0; }
+.nv-article-byline .nv-author-copy strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* ═══ Smooth motion layer ═══ */
+.nv-reveal { opacity: 0; transform: translate3d(0, 18px, 0); }
+.nv-reveal.nv-in {
+  opacity: 1; transform: none;
+  transition: opacity .6s cubic-bezier(.22,.7,.2,1) var(--nv-d, 0ms), transform .6s cubic-bezier(.22,.7,.2,1) var(--nv-d, 0ms);
+}
+/* images fade in softly instead of popping */
+img { transition: opacity .35s ease; }
+/* nicer press/hover feel on buttons & links */
+.brand-button, .nvn-btn, button[type="submit"] { transition: transform .2s cubic-bezier(.22,.7,.2,1), box-shadow .2s ease, background-color .2s ease, color .2s ease; }
+.brand-button:hover, .nvn-btn:hover:not(:disabled) { transform: translateY(-1px); }
+/* carousel: smoother easing, GPU-friendly */
+.nv-home-carousel-card { transition: transform .6s cubic-bezier(.22,.7,.2,1), opacity .6s ease, box-shadow .6s ease !important; backface-visibility: hidden; }
+/* navbar link underline slide */
+.navbar nav a { position: relative; }
+@media (prefers-reduced-motion: reduce) { .nv-reveal { opacity: 1 !important; transform: none !important; } }
+
+.nv-confirm-fade { animation: nvCfFade .18s ease both; }
+.nv-confirm-pop { animation: nvCfPop .24s cubic-bezier(.22,.7,.2,1) both; }
+@keyframes nvCfFade { from { opacity: 0 } to { opacity: 1 } }
+@keyframes nvCfPop { from { opacity: 0; transform: translateY(10px) scale(.97) } to { opacity: 1; transform: none } }
+
+/* ═══════════════════════════════════════════════════════════════════
+   THEME — Gridlove look: light-grey page, white cards with a soft shadow, white navbar.
+   (Hover colours are untouched: links, buttons and cards keep the brand green on hover.)
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+  --glass-rgb: 255, 255, 255;
+  --glass-line: transparent;
+  --bg: #f2f2f2;
+  --bg2: #ebebeb;
+  --card: #ffffff;
+  --muted: #6c6c6c;
+  --border: rgba(0, 0, 0, .09);
+  --gl-shadow: 0 1px 4px rgba(0, 0, 0, .09), 0 1px 1px rgba(0, 0, 0, .04);
+  --gl-shadow-hover: 0 6px 18px rgba(0, 0, 0, .15);
+  --gl-nav-shadow: 0 1px 7px rgba(0, 0, 0, .13);
+  color-scheme: light;
+}
+html, body { background: #f2f2f2; }
+body { background-image: none; color: var(--ink); overflow-x: clip; }
+body::before, body::after { content: none; display: none; }
+
+/* Navbar */
+.navbar {
+  background: #fff;
+  border-bottom: 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  color: var(--ink);
+  box-shadow: var(--gl-nav-shadow);
+}
+.navbar .nv-grain { background: transparent; }
+.navbar a:hover, .navbar button:hover { color: var(--brand-primary); }
+.navbar button.rounded:hover, .navbar button:hover { background-color: rgba(0, 0, 0, .04); }
+.navbar .absolute.bg-white { background: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.14) !important; }
+.nv-grain { background: #FFFFFF; }
+
+/* News cards */
+.news-card { background: #fff; border: 0; border-radius: 2px; }
+
+/* Generic white section / page banners */
+.glass-section,
+.nv-hero-glass {
+  background: #fff;
+  border: 0;
+  border-radius: 2px;
+}
+.nv-hero-glass { border-radius: 0; }
+
+/* Existing white cards / panels / sidebars → white cards that sit on the grey page */
+.bg-white:not(input):not(textarea):not(select):not(img):not(button):not(a):not(.nv-search):not(.nv-search *):not(.navbar *):not(.glass-section *):not(.nv-hero-glass *):not(.rounded-full):not(.absolute),
+.ui-card, .news-editorial-card, .nv-editorial-lead {
+  background-color: #fff;
+}
+.bg-white.border, .ui-card, .news-editorial-card { border-color: rgba(0, 0, 0, .06); }
+.nv-editorial-lead { border: 0; border-radius: 2px; }
+.border-border { border-color: var(--border); }
+.bg-gray-50, .bg-gray-100, .bg-slate-50, .bg-slate-100 { background-color: #f6f6f6; }
+.hover\:bg-gray-50:hover, .hover\:bg-gray-100:hover, .hover\:bg-white:hover { background-color: #f4f4f4; }
+/* inputs: white, readable, with a hairline */
+input.bg-white, textarea.bg-white, select.bg-white,
+input:not([type=checkbox]):not([type=radio]), textarea, select { background-color: #FFFFFF; }
+.nv-search, .nv-select { background: #FFFFFF; }
+
+/* Primary buttons / badges: charcoal instead of green fills (links & icons keep brand green) */
+.bg-primary { background-color: var(--ink); }
+.hover\:bg-primary\/90:hover { background-color: #000; }
+.bg-primary\/5, .bg-primary\/10 { background-color: rgba(0, 0, 0, .04); }
+.nv-search__btn { background: var(--ink); }
+.nv-search__btn:hover { background: #000; }
+.nvn-loadmore:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); color: #fff; }
+.nvn-adtag { background: rgba(28, 31, 29, .8); }
+
+/* Homepage editorial front page: white page, glass lead card */
+.nv-editorial-frontpage { background: transparent; color: var(--ink); }
+.nv-editorial-lead-image, .nv-editorial-card-image, .nv-article-hero, .nv-article-hero img,
+.nv-home-carousel-card, .nv-home-carousel-card > img,
+.nv-editorial-card-image img, .nvn-img, .nv-article-gallery img, .nv-related-thumb img,
+.nv-editorial-lead-image img { background: transparent; }
+.nv-editorial-tag, .nv-article-kicker span:first-child { background: var(--ink); color: #fff; }
+.nv-editorial-kicker { border-top-color: var(--ink); border-bottom-color: var(--border); }
+.nv-editorial-card { border-top-color: var(--border); }
+
+/* News page */
+.nvn-brand { box-shadow: none; }
+.nvn-brand::after { display: none; }
+.nvn-shimmer { background: linear-gradient(90deg, rgba(235,240,250,.35) 25%, rgba(235,240,250,.9) 50%, rgba(235,240,250,.35) 75%); background-size: 200% 100%; }
+.nv-pageloader--full { background: #FFFFFF; }
+.nv-article-byline { color: var(--ink); }
+.nv-byline-share button:hover { background: rgba(var(--glass-rgb), .7); }
+/* selection / contrast on glass */
+.text-gray-200, .text-gray-300 { color: #8a8a8a !important; }
+.text-gray-400, .text-gray-500, .text-gray-600 { color: #4a4f4c !important; }
+
+/* Reduce blur on small / low-power devices for speed */
+
+
+/* News-page sidebar cards (bg-[var(--card)]) get the glass treatment; thumbnails stay untouched */
+.bg-\[var\(--card\)\] { border-color: transparent; border-radius: 2px; }
+.bg-\[var\(--card\)\] .nvn-zoom, .news-card .nvn-zoom, .news-card .bg-gray-100, .nvn-zoom.bg-gray-100 { background-color: transparent; }
+.nvn-featured-story { border-radius: 2px; }
+.nv-select, .nv-search { background: #FFFFFF; }
+
+/* Tighter news-title rhythm */
+.nvn-title { line-height: 1.35; }
+@media (max-width: 639px) { article .nvn-title.text-xl { font-size: 17px; } }
+
+/* ═══ Article byline — one tidy row on desktop, author + share row then date row on mobile ═══ */
+.nv-article-byline { display:flex; flex-wrap:nowrap; align-items:center; justify-content:space-between; gap:12px 20px; padding:12px 0; color:var(--ink); font-size:14px; position:relative; }
+.nv-byline-meta { display:flex; flex-wrap:wrap; align-items:center; gap:4px 12px; min-width:0; }
+.nv-article-byline .nv-author-chip { gap:8px; }
+.nv-article-byline .nv-author-chip > img { width:28px; height:28px; }
+.nv-byline-by { color:var(--muted); font-size:14px; margin-right:2px; }
+.nv-article-byline .nv-author-chip strong { color:var(--ink); font-size:14px; font-weight:700; }
+.nv-byline-sep { width:1px; height:16px; background:rgba(0,0,0,.2); flex:none; }
+.nv-article-byline time { margin-left:0; font-size:14px; font-weight:400; color:var(--ink); }
+.nv-byline-dot { color:var(--brand-secondary); font-size:12px; }
+.nv-byline-share { display:flex; flex-wrap:nowrap; align-items:center; gap:2px; margin-left:auto; flex:none; }
+.nv-byline-share button { display:grid; place-items:center; width:32px; height:32px; min-height:0; border-radius:50%; color:var(--ink); background:transparent; }
+.nv-byline-share button:hover { background:rgba(0,0,0,.06); color:var(--brand-primary); }
+@media (max-width:640px) {
+  .nv-article-byline { display:block; padding:10px 0 12px; }
+  .nv-byline-meta { display:block; }
+  .nv-article-byline .nv-author-chip { display:flex; width:calc(100% - 170px); min-height:32px; }
+  .nv-article-byline .nv-author-chip strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .nv-byline-sep { display:none; }
+  .nv-article-byline time, .nv-byline-dot, .nv-byline-meta > span:last-child { display:inline; font-size:13px; color:var(--muted); }
+  .nv-byline-dot { margin:0 6px; }
+  .nv-byline-meta > time { display:inline-block; margin-top:4px; }
+  .nv-byline-share { position:absolute; right:-6px; top:10px; }
+  .nv-byline-share button { width:30px; height:30px; }
+}
+
+/* ═══ Soft Gridlove shadows: every white card gets the same light drop shadow, lifting a little on hover ═══ */
+.glass-section, .news-card, .nvn-brand, .nv-editorial-lead, .ui-card, .news-editorial-card,
+.bg-\[var\(--card\)\], .nv-hero-glass,
+.bg-white:not(input):not(textarea):not(select):not(img):not(button):not(a):not(.nv-search):not(.nv-search *):not(.navbar *):not(.glass-section *):not(.nv-hero-glass *):not(.rounded-full):not(.absolute) {
+  box-shadow: var(--gl-shadow);
+}
+/* nested tiles inside a card stay flat to avoid shadow stacking */
+.glass-section .glass-section, .news-card .news-card { box-shadow: none; }
+
+.news-card, .nv-editorial-lead, .nv-editorial-card, .bg-\[var\(--card\)\] {
+  transition: transform .28s cubic-bezier(.22,.7,.2,1), box-shadow .28s ease, border-color .28s ease;
+}
+.news-card:hover, .nv-editorial-lead:hover { transform: translateY(-2px); box-shadow: var(--gl-shadow-hover); }
+.news-card, .nv-editorial-lead, .nvn-featured-story { position: relative; }
+.nv-editorial-card:hover .nv-editorial-card-copy h3 { color: var(--brand-primary); }
+@media (prefers-reduced-motion: reduce) { .news-card:hover, .nv-editorial-lead:hover { transform: none; } }
+
+/* ═══ Article body + admin rich-text editor (bold, italic, headings, lists, inline images) ═══ */
+.nv-prose { font-family:"Hind Siliguri", sans-serif; font-size: 1.0625rem; line-height: 2; color: inherit; overflow-wrap: anywhere; }
+@media (min-width: 640px) { .nv-prose { font-size: 1.125rem; line-height: 2.1; } }
+.nv-prose > * + * { margin-top: 1.1em; }
+.nv-prose p { margin: 0; }
+.nv-prose p + p { margin-top: 1.1em; }
+.nv-prose strong, .nv-prose b { font-weight:700; }
+.nv-prose em, .nv-prose i { font-style: italic; }
+.nv-prose u { text-decoration: underline; text-underline-offset: 3px; }
+.nv-prose s { text-decoration: line-through; }
+.nv-prose h2 { font-size: 1.5em; font-weight:700; line-height: 1.4; margin-top: 1.6em; color: var(--brand-primary, #0B4D35); }
+.nv-prose h3 { font-size: 1.25em; font-weight:700; line-height: 1.45; margin-top: 1.4em; }
+.nv-prose blockquote { margin-left: 0; margin-right: 0; padding: .4em 1em; border-left: 4px solid var(--brand-secondary, #55B52E); background: rgba(85,181,46,.08); font-style: italic; }
+.nv-prose ul { list-style: disc; padding-left: 1.6em; }
+.nv-prose ol { list-style: decimal; padding-left: 1.6em; }
+.nv-prose li + li { margin-top: .3em; }
+.nv-prose a { color: var(--brand-primary, #0B4D35); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+.nv-prose a:hover { color: var(--brand-secondary, #55B52E); }
+.nv-prose img { display: block; max-width: 100%; height: auto; margin: 1.4em auto; border-radius: 6px; background: #e8ece8; }
+
+.nv-rte { border: 1px solid var(--border, #d9ddd9); background: #fff; }
+.nv-rte-bar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 6px; background: #f6f8f6; border-bottom: 1px solid var(--border, #d9ddd9); }
+.nv-rte-btn { min-width: 34px; height: 34px; padding: 0 8px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; border: 1px solid transparent; border-radius: 4px; background: transparent; font-size: 14px; font-weight: 700; line-height: 1; cursor: pointer; white-space: nowrap; color: #222; }
+.nv-rte-btn:hover:not(:disabled) { background: #e6ede6; border-color: #cfd8cf; }
+.nv-rte-btn.is-active { background: var(--brand-primary, #0B4D35); color: #fff; }
+.nv-rte-btn:disabled { opacity: .55; cursor: wait; }
+.nv-rte-sep { width: 1px; height: 22px; background: #d3d9d3; margin: 0 3px; }
+.nv-rte-err { padding: 8px 12px; background: #fef2f2; color: #b91c1c; font-size: 13px; font-weight: 700; border-bottom: 1px solid #fecaca; }
+.nv-rte-wrap { position: relative; }
+.nv-rte-ph { position: absolute; left: 16px; top: 12px; color: #9aa39b; pointer-events: none; font-family:"Hind Siliguri", sans-serif; }
+.nv-rte-body { min-height: 320px; max-height: 70vh; overflow-y: auto; padding: 12px 16px; outline: none; font-size: 1.05rem; line-height: 1.9; }
+.nv-rte-body:focus { box-shadow: inset 0 0 0 2px rgba(85,181,46,.35); }
+.nv-rte-body img { cursor: pointer; outline: 2px solid transparent; }
+.nv-rte-body img:hover { outline-color: rgba(85,181,46,.5); }
+.nv-rte-hint { margin: 0; padding: 6px 12px; border-top: 1px solid var(--border, #d9ddd9); font-size: 12px; color: #6b746c; background: #fafbfa; }
+
+/* Search overlay keyboard keys */
+.kbd { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 5px; margin: 0 2px; border: 1px solid var(--border, #d9ddd9); border-bottom-width: 2px; border-radius: 4px; background: #fff; font-family: inherit; font-size: 11px; color: #555; }
+
+/* small "NEW" tag above a navbar item / section title */
+.nv-nav-new { position: absolute; top: -11px; right: -8px; padding: 2px 5px 2px; border-radius: 3px; background: #e11d48; color: #fff; font-size: 8px; font-weight:700; line-height: 1; letter-spacing: .08em; pointer-events: none; text-transform: none; }
+
+
+
+/* ───────── Flowmotion carousel: faithful adaptation of supplied HTML demo ───────── */
+.nv-flowmotion-section { max-width:1180px; margin:28px auto 38px; padding:0 24px; }
+.nv-flowmotion-topline { display:flex; justify-content:space-between; gap:16px; margin-bottom:16px; padding:0 2px; color:#666; font:700 11px/1.4 "Hind Siliguri", sans-serif; letter-spacing:.13em; }
+.nv-flowmotion-topline span { color:#777; }
+@property --nv-c1 { syntax:"<color>"; inherits:true; initial-value:#ffb930; }
+@property --nv-c2 { syntax:"<color>"; inherits:true; initial-value:#ffd343; }
+@property --nv-c3 { syntax:"<color>"; inherits:true; initial-value:#ffed56; }
+.nv-flowmotion { --cw:150px; --ch:170px; --cgap:16px; --cright:56px; --cbottom:26px; --nv-c1:#ffb930; --nv-c2:#ffd343; --nv-c3:#ffed56; --nv-dir:1; position:relative; min-height:400px; overflow:hidden; border-radius:9px; background:linear-gradient(45deg, var(--nv-c1) 0%, var(--nv-c2) 50%, var(--nv-c3) 100%); box-shadow:0 18px 35px #2222; transition:--nv-c1 .95s cubic-bezier(.65,0,.2,1), --nv-c2 .95s cubic-bezier(.65,0,.2,1), --nv-c3 .95s cubic-bezier(.65,0,.2,1); color:var(--nv-ink,#241d1e); outline:none; }
+.nv-flowmotion-inner { position:relative; min-height:400px; padding:36px 8%; display:flex; align-items:center; }
+.nv-flowmotion-copy { color:var(--nv-ink); position:relative; width:40%; max-width:470px; z-index:2; padding-bottom:72px; }
+.nv-flowmotion-tag { font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; opacity:.72; }
+.nv-flowmotion-copy > * { animation:nvFlowUp .65s cubic-bezier(.22,1,.36,1) both; }
+.nv-flowmotion-copy > *:nth-child(2) { animation-delay:.06s; }
+.nv-flowmotion-copy > *:nth-child(3) { animation-delay:.12s; }
+.nv-flowmotion-copy > *:nth-child(4) { animation-delay:.18s; }
+.nv-flowmotion-copy > *:nth-child(5) { animation-delay:.24s; }
+@keyframes nvFlowUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce) { .nv-flowmotion-copy > * { animation:none; } }
+@keyframes nvFlowOut { to { opacity:0; transform:translateY(-14px); } }
+@keyframes nvMainIn { from { opacity:0; transform:translateX(calc(var(--nv-dir) * 60px)) scale(.9); } to { opacity:1; transform:none; } }
+.nv-flowmotion.is-out .nv-flowmotion-copy > * { animation:nvFlowOut .34s cubic-bezier(.4,0,1,1) both; animation-delay:0s; }
+.nv-flowmotion.is-out .nv-flowmotion-main-image img { opacity:0; transform:translateX(calc(var(--nv-dir) * -50px)) scale(.9); }
+.nv-flowmotion.is-out .nv-flowmotion-main-image, .nv-flowmotion.is-fly .nv-flowmotion-main-image { box-shadow:none; }
+.nv-flowmotion.is-fly .nv-flowmotion-main-image img { opacity:0; }
+.nv-flowmotion.is-in .nv-flowmotion-main-image img { animation:nvMainIn .75s cubic-bezier(.22,1,.36,1) both; }
+.nv-flowmotion-card { position:absolute; z-index:4; bottom:var(--cbottom); left:calc(100% - var(--cright) - var(--cw) + (var(--slot) - 1) * (var(--cw) + var(--cgap))); width:var(--cw); height:var(--ch); padding:8px; border:0; border-radius:20px; background:linear-gradient(45deg, var(--nv-c1) 0%, var(--nv-c2) 50%, var(--nv-c3) 100%); box-shadow:0 14px 24px #0003; cursor:pointer; transition:left .95s cubic-bezier(.65,0,.2,1), opacity .5s ease, transform .3s ease, box-shadow .3s ease; }
+.nv-flowmotion-card:hover { transform:translateY(-5px); box-shadow:0 20px 30px #0004; }
+.nv-flowmotion-card-inner { position:relative; display:block; width:100%; height:100%; border-radius:12px; overflow:hidden; background:#203b2c; }
+.nv-flowmotion-card-inner img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s ease; }
+.nv-flowmotion-card:hover img { transform:scale(1.06); }
+.nv-flowmotion-card-inner span { position:absolute; left:0; right:0; bottom:0; padding:20px 9px 8px; color:#fff; text-align:left; font:700 11px/1.3 "Hind Siliguri", sans-serif; background:linear-gradient(transparent,#000b); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.nv-flowmotion-fly { position:absolute; z-index:6; box-sizing:border-box; overflow:hidden; pointer-events:none; background:linear-gradient(45deg, var(--nv-c1) 0%, var(--nv-c2) 50%, var(--nv-c3) 100%); box-shadow:0 26px 46px -10px #0006; will-change:left,top,width,height; }
+.nv-flowmotion-fly img { display:block; width:100%; height:100%; object-fit:cover; border-radius:12px; }
+@media (prefers-reduced-motion: reduce) { .nv-flowmotion, .nv-flowmotion-card { transition:none; } }
+.nv-flowmotion-copy h1 { font-family:"Hind Siliguri", sans-serif; font-size:clamp(26px,2.8vw,36px); line-height:1.22; letter-spacing:0; margin:14px 0 12px; font-weight:700; overflow-wrap:break-word; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; text-wrap:balance; }
+.nv-flowmotion-desc { font-family:"Hind Siliguri", sans-serif; font-size:14.5px; line-height:1.7; max-width:400px; color:color-mix(in srgb, var(--nv-ink) 82%, transparent); margin:0; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.nv-flowmotion-meta { display:flex; align-items:center; flex-wrap:wrap; gap:9px; margin-top:17px; font-size:11px; color:var(--nv-ink); }
+.nv-flowmotion-meta strong { font-weight:700; }
+.nv-flowmotion-meta time { opacity:.78; }
+.nv-flowmotion-avatar { width:21px; height:21px; border-radius:50%; background:linear-gradient(135deg,#0b4d35 50%,#55b52e 50%); border:1px solid #ffffffaa; flex:none; }
+.nv-flowmotion-cta { display:inline-flex; align-items:center; gap:12px; margin-top:20px; padding:13px 20px; border:0; border-radius:30px; background:var(--nv-ink); color:#fff; font-size:13px; font-weight:700; cursor:pointer; transition:transform .25s,background .25s; }
+.nv-flowmotion-cta:hover { transform:translateY(-2px); background:#0b4d35; }
+.nv-flowmotion-visual { position:absolute; right:5%; top:50%; transform:translateY(-50%); width:46%; height:auto; aspect-ratio:16/9; display:grid; place-items:center; }
+.nv-flowmotion-main-image { width:100%; height:100%; padding:0; border:0; background:transparent; display:grid; place-items:center; cursor:pointer; border-radius:14px; overflow:hidden; box-shadow:0 22px 40px -12px #0004; }
+.nv-flowmotion-main-image img { width:100%; height:100%; object-fit:cover; transition:transform .45s cubic-bezier(.4,0,.2,1),opacity .35s ease; border-radius:14px; }
+.nv-flowmotion-main-image:hover img { transform:scale(1.025); }
+.nv-flowmotion-controls { position:absolute; left:8%; bottom:26px; transform:none; display:flex; gap:10px; z-index:5; }
+.nv-flowmotion-controls button { width:52px; height:52px; min-height:52px; padding:0; border:0; border-radius:50%; background:#251d1ee8; color:white; font-size:25px; line-height:1; cursor:pointer; transition:transform .2s,background .2s; }
+.nv-flowmotion-controls button:hover { background:#0b4d35; transform:scale(1.06); }
+.nv-flowmotion-dots { display:flex; justify-content:center; gap:8px; margin-top:22px; }
+.nv-flowmotion-dots button { width:8px; height:8px; min-width:8px; min-height:8px; padding:0; border:0; border-radius:20px; background:#00000038; cursor:pointer; transition:width .3s,background .3s; }
+.nv-flowmotion-dots button.active { width:27px; background:#292122; }
+.nv-flowmotion-loading,.nv-flowmotion-empty { min-height:400px; display:grid; place-items:center; border-radius:9px; background:rgba(235,240,250,.82); color:#4a4f4c; }
+.nv-flowmotion:focus-visible button:focus-visible { outline:3px solid #0b4d35; outline-offset:3px; }
+@media(max-width:700px) {
+ .nv-flowmotion-section { padding:0 14px; margin:18px auto 28px; }
+ .nv-flowmotion-topline { font-size:9px; letter-spacing:.08em; }
+ .nv-flowmotion,.nv-flowmotion-inner { min-height:520px; }
+ .nv-flowmotion-inner { padding:36px 25px; align-items:flex-start; }
+ .nv-flowmotion-copy { width:100%; padding-top:10px; padding-bottom:0; }
+ .nv-flowmotion-copy h1 { font-size:clamp(23px,6.4vw,30px); line-height:1.25; margin:12px 0 10px; }
+ .nv-flowmotion-desc { font-size:14px; line-height:1.5; max-width:92%; }
+ .nv-flowmotion-meta { margin-top:10px; font-size:10px; }
+ .nv-flowmotion-cta { margin-top:13px; padding:11px 17px; }
+ .nv-flowmotion-visual { width:80%; height:auto; aspect-ratio:16/9; right:10%; top:57%; transform:translateY(-20%); }
+ .nv-flowmotion-controls { left:28px; bottom:9%; transform:none; }
+ .nv-flowmotion-controls button { width:43px; height:43px; min-height:43px; }
+ .nv-flowmotion-dots { margin-top:14px; }
+ .nv-flowmotion-loading,.nv-flowmotion-empty { min-height:420px; }
+}
+@media(max-width:390px) {
+ .nv-flowmotion-inner { padding-left:18px; padding-right:18px; }
+ .nv-flowmotion-copy h1 { font-size:23px; }
+ .nv-flowmotion-visual { width:82%; height:auto; aspect-ratio:16/9; top:60%; right:8%; }
+}
+
+
+/* ───────── Responsive hardening across public pages and admin ───────── */
+html, body, #root { width:100%; min-width:320px; }
+#root { overflow-x:clip; }
+main, section, article, aside, header, footer { min-width:0; }
+img, video, iframe { max-width:100%; }
+input, textarea, select { max-width:100%; min-width:0; }
+pre, code { max-width:100%; overflow-x:auto; }
+:where(.overflow-x-auto, [class*="overflow-x-auto"]) { -webkit-overflow-scrolling:touch; }
+
+/* Keep long Bangla headlines and admin data inside their containers. */
+h1, h2, h3, h4, p, a, button, td, th, label { overflow-wrap:anywhere; }
+table { max-width:100%; }
+
+/* Tablet carousel: preserve separate text and image columns. */
+@media (min-width:701px) and (max-width:960px) {
+  .nv-flowmotion, .nv-flowmotion-inner { min-height:440px; }
+  .nv-flowmotion-inner { padding:36px 5%; }
+  .nv-flowmotion { --cw:120px; --ch:136px; --cgap:12px; --cright:36px; --cbottom:22px; }
+  .nv-flowmotion-copy { width:43%; max-width:390px; }
+  .nv-flowmotion-copy h1 { font-size:clamp(23px,3.3vw,30px); }
+  .nv-flowmotion-desc { font-size:14px; max-width:100%; }
+  .nv-flowmotion-visual { width:47%; right:4%; height:auto; aspect-ratio:16/9; }
+  .nv-flowmotion-controls { left:5%; bottom:22px; }
+}
+
+/* Phone carousel is intentionally stacked to prevent any overlap. */
+@media (max-width:700px) {
+  .nv-flowmotion-section { padding-inline:12px; margin:16px auto 26px; }
+  .nv-flowmotion-topline { align-items:center; font-size:9px; letter-spacing:.04em; }
+  .nv-flowmotion, .nv-flowmotion-inner { min-height:0; }
+  .nv-flowmotion-inner { display:flex; flex-direction:column; align-items:stretch; gap:14px; padding:25px 20px 84px; }
+  .nv-flowmotion { --cw:92px; --ch:100px; --cgap:10px; --cright:12px; --cbottom:12px; }
+  .nv-flowmotion-card { border-radius:14px; padding:6px; }
+  .nv-flowmotion-card[data-slot="2"], .nv-flowmotion-card[data-slot="3"] { opacity:0 !important; }
+  .nv-flowmotion-card-inner span { font-size:9px; padding:16px 7px 6px; }
+  .nv-flowmotion-copy { width:100%; max-width:none; padding:0; }
+  .nv-flowmotion-copy h1 { font-size:clamp(22px,6.2vw,28px); line-height:1.25; margin:10px 0 8px; }
+  .nv-flowmotion-desc { max-width:100%; font-size:14px; line-height:1.55; }
+  .nv-flowmotion-meta { gap:7px; margin-top:10px; font-size:10px; }
+  .nv-flowmotion-cta { margin-top:12px; padding:10px 16px; }
+  .nv-flowmotion-visual { position:relative; inset:auto; transform:none; width:100%; height:auto; aspect-ratio:16/9; display:block; }
+  .nv-flowmotion-main-image { width:100%; height:100%; border-radius:12px; }
+  .nv-flowmotion-main-image img { width:100%; height:100%; object-fit:cover; border-radius:12px; }
+  .nv-flowmotion-controls { left:20px; bottom:20px; transform:none; }
+  .nv-flowmotion-controls button { width:40px; height:40px; min-height:40px; }
+  .nv-flowmotion-dots { margin-top:12px; }
+  .nv-flowmotion-loading, .nv-flowmotion-empty { min-height:320px; }
+}
+@media (max-width:380px) {
+  .nv-flowmotion-inner { padding:20px 15px 78px; }
+  .nv-flowmotion-copy h1 { font-size:22px; }
+  .nv-flowmotion-controls { left:15px; bottom:18px; }
+  .nv-flowmotion-controls button { width:36px; height:36px; min-height:36px; }
+}
+
+/* Admin pages: avoid fixed-width content causing horizontal page overflow. */
+@media (max-width:767px) {
+  .md\:pl-64 { padding-left:0; }
+  .nv-admin-content, .admin-content, [data-admin-content] { min-width:0; max-width:100%; }
+  main.p-4, main.sm\:p-6 { padding:12px; }
+  .nv-rte-body { min-height:240px; max-height:58vh; padding:10px; }
+  .nv-rte-bar { gap:3px; }
+  .nv-rte-btn { min-width:32px; padding-inline:6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+}
+
+
+/* ═══════════════ News page — editorial paper style (nvx-) ═══════════════ */
+.nvx {
+  --nvx-bg: #FFFFFF;
+  --nvx-ink: #1a1917;
+  --nvx-red: #0B4D35;
+  --nvx-mute: #8a877f;
+  --nvx-line: #e1e5e2;
+  background: var(--nvx-bg);
+  color: var(--nvx-ink);
+  font-family:"Hind Siliguri", sans-serif;
+}
+.nvx[data-lang="bn"] { font-family:"Hind Siliguri", sans-serif; }
+.nvx-ink  { color: var(--nvx-ink); }
+.nvx-red  { color: var(--nvx-red); }
+.nvx-mute { color: var(--nvx-mute); }
+.nvx-line { border-color: var(--nvx-line); }
+.nvx-rule-bg { background: var(--nvx-line); }
+.nvx-sans { font-family:"Hind Siliguri", sans-serif; }
+.nvx[data-lang="bn"] .nvx-sans { font-family:"Hind Siliguri", sans-serif; }
+.nvx-serif { font-family:"Hind Siliguri", sans-serif; }
+.nvx[data-lang="bn"] .nvx-serif { font-family:"Hind Siliguri", sans-serif; font-weight: 600; }
+
+/* small monospace caps used for kickers, times and tabs (no tracking for Bengali — it breaks conjuncts) */
+.nvx-mono {
+  font-family:"Hind Siliguri", sans-serif;
+  font-size: 10px; line-height: 1.4; letter-spacing: .09em; text-transform: uppercase; font-weight: 500;
+}
+.nvx[data-lang="bn"] .nvx-mono { font-family:"Hind Siliguri", sans-serif; font-size: 12.5px; letter-spacing: 0; text-transform: none; font-weight: 500; }
+.nvx-label {
+  font-family:"Hind Siliguri", sans-serif;
+  font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600;
+}
+.nvx[data-lang="bn"] .nvx-label { font-family:"Hind Siliguri", sans-serif; font-size: 13px; letter-spacing: 0; text-transform: none; font-weight: 700; }
+
+/* masthead */
+.nvx-bar { border-bottom: 1px solid var(--nvx-line); }
+.nvx-tab { position: relative; padding: 14px 12px; color: var(--nvx-mute); background: none; border: 0; cursor: pointer; transition: color .2s ease; }
+.nvx-tab::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 2px; background: var(--nvx-red); transform: scaleX(0); transform-origin: left; transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+.nvx-tab:hover { color: var(--nvx-ink); }
+.nvx-tab-on { color: var(--nvx-red); }
+.nvx-tab-on::after { transform: scaleX(1); }
+
+/* search: hairline underline, nothing else */
+.nvx-search { position: relative; display: flex; align-items: center; width: 100%; max-width: 280px; border-bottom: 1px solid var(--nvx-ink); }
+.nvx-search__icon { position: absolute; left: 0; color: var(--nvx-mute); pointer-events: none; }
+.nvx-search__input, .nvx-search__input:focus, .nvx-search__input:focus-visible {
+  width: 100%; background: transparent; border: 0; outline: 0; box-shadow: none;
+  padding: 8px 24px 8px 24px; font-size: 14px; color: var(--nvx-ink);
+}
+.nvx-search__input::placeholder { color: var(--nvx-mute); }
+.nvx-search__input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.nvx-search:focus-within { border-bottom-color: var(--nvx-red); }
+.nvx-search__clear { position: absolute; right: 0; display: grid; place-items: center; width: 22px; height: 22px; color: var(--nvx-mute); background: none; border: 0; cursor: pointer; }
+.nvx-search__clear:hover { color: var(--nvx-ink); }
+
+/* images: flat, square corners, paper-tone placeholder */
+.nvx-frame { background: #e9e5db; }
+.nvx-thumb-empty { background: #e9e5db; }
+.nvx a:hover .nvx-hl { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.nvx a { color: inherit; }
+
+/* top block: hero + "More today" with a vertical rule between */
+.nvx-top { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
+.nvx-side__item { padding: 16px 0 20px; border-top: 1px solid var(--nvx-line); }
+.nvx-side__item:last-child { padding-bottom: 0; }
+@media (min-width: 900px) {
+  .nvx-top--split { grid-template-columns: minmax(0, 1fr) minmax(250px, 31%); gap: 0; }
+  .nvx-top--split .nvx-hero { padding-right: 32px; }
+  .nvx-top--split .nvx-side { padding-left: 32px; border-left: 1px solid var(--nvx-line); }
+}
+
+/* 1 / 2 / 3-column story grids with vertical hairlines */
+.nvx-grid { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 36px; }
+.nvx-grid--rows { row-gap: 44px; }
+@media (min-width: 640px) {
+  .nvx-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nvx-grid > *:nth-child(n) { padding: 0 20px; border-left: 1px solid var(--nvx-line); }
+  .nvx-grid > *:nth-child(2n+1) { padding-left: 0; border-left: 0; }
+  .nvx-grid > *:nth-child(2n) { padding-right: 0; }
+}
+@media (min-width: 1024px) {
+  .nvx-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .nvx-grid > *:nth-child(n) { padding: 0 24px; border-left: 1px solid var(--nvx-line); }
+  .nvx-grid > *:nth-child(3n+1) { padding-left: 0; border-left: 0; }
+  .nvx-grid > *:nth-child(3n) { padding-right: 0; }
+}
+
+/* buttons */
+.nvx-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+  padding: 11px 22px; border: 1px solid var(--nvx-ink); background: transparent; color: var(--nvx-ink);
+  font-family:"Hind Siliguri", sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  transition: background-color .2s ease, color .2s ease;
+}
+.nvx[data-lang="bn"] .nvx-btn { font-family:"Hind Siliguri", sans-serif; font-size: 14px; letter-spacing: 0; text-transform: none; }
+.nvx-btn:hover:not(:disabled), .nvx-btn--solid { background: var(--nvx-ink); color: var(--nvx-bg); }
+.nvx-btn--solid:hover:not(:disabled) { background: var(--nvx-red); border-color: var(--nvx-red); }
+.nvx-btn--wide { min-width: 230px; }
+
+/* news page images: always fill the frame (overrides the legacy contain rule on .nvn-img) */
+.nvx-img { object-fit: cover !important; object-position: center 25%; transition: transform .7s cubic-bezier(.2,.7,.2,1), filter .4s ease; }
+.group:hover .nvx-img { transform: scale(1.05); }
+@media (prefers-reduced-motion: reduce) { .group:hover .nvx-img { transform: none; } }
+
+
+/* ═══════════════ Home carousel — poster layout (main image 1200×1500, 4:5) ═══════════════
+   Big poster on the right with the next posters overlapping its lower-right corner; the box keeps a fixed
+   height so a tall poster never stretches the carousel. White frame, no rounded corners, no title overlay. */
+.nv-flowmotion { --cw:146px; --ch:182px; --cgap:32px; --cright:12.8%; --cbottom:28px; min-height:506px; }
+.nv-flowmotion-inner { min-height:506px; padding:36px 4.3%; }
+.nv-flowmotion-copy { width:40%; max-width:470px; padding-bottom:0; margin-top:-88px; }
+.nv-flowmotion-visual { right:19.2%; top:17%; transform:none; width:23.1%; min-width:190px; max-width:300px; height:auto; aspect-ratio:4/5; display:block; }
+.nv-flowmotion-main-image { display:block; box-sizing:border-box; width:100%; height:100%; border:3px solid #fff; border-radius:3px; background:#fff; box-shadow:0 18px 38px -10px #0005; }
+.nv-flowmotion-main-image img { border-radius:0; object-fit:cover; }
+.nv-flowmotion-card { padding:0; box-sizing:border-box; border:3px solid #fff; border-radius:3px; background:#fff; box-shadow:0 12px 26px #0004; }
+.nv-flowmotion-card-inner { border-radius:0; background:#e8e5dc; }
+.nv-flowmotion-card-inner span { display:none; }
+.nv-flowmotion-fly { padding:0; box-sizing:border-box; border:3px solid #fff; border-radius:3px; background:#fff; box-shadow:0 26px 46px -10px #0006; }
+.nv-flowmotion-fly img { border-radius:0; }
+.nv-flowmotion-controls { left:4.3%; bottom:auto; top:calc(50% + 95px); }
+
+@media (min-width:701px) and (max-width:960px) {
+  .nv-flowmotion { --cw:112px; --ch:140px; --cgap:20px; --cright:9%; --cbottom:24px; min-height:480px; }
+  .nv-flowmotion-inner { min-height:480px; padding:32px 4.3%; }
+  .nv-flowmotion-copy { width:42%; margin-top:-60px; }
+  .nv-flowmotion-visual { right:17%; top:15%; width:28%; min-width:0; }
+  .nv-flowmotion-controls { left:4.3%; top:auto; bottom:24px; }
+}
+
+@media (max-width:700px) {
+  .nv-flowmotion { --cw:30vw; --ch:37.5vw; --cgap:10px; --cright:14px; --cbottom:104px; }
+  .nv-flowmotion-inner { padding:25px 20px 84px; }
+  .nv-flowmotion-copy { width:100%; margin-top:0; }
+  .nv-flowmotion-visual { position:relative; inset:auto; width:56%; min-width:0; max-width:none; aspect-ratio:4/5; transform:none; right:auto; top:auto; }
+  .nv-flowmotion-main-image { border-width:2px; }
+  .nv-flowmotion-card { border-width:2px; }
+  .nv-flowmotion-controls { left:20px; top:auto; bottom:20px; }
+}
+
+/* article page: show the 4:5 main image whole instead of cropping it into a 16:9 box */
+.nv-article-hero img { aspect-ratio:auto; max-height:min(88vh, 960px); width:auto; max-width:100%; margin-inline:auto; object-fit:contain !important; }
+
+/* while a card flies into the poster slot, keep the slot clear (no white frame behind the flying card) */
+.nv-flowmotion.is-out .nv-flowmotion-main-image, .nv-flowmotion.is-fly .nv-flowmotion-main-image { background:transparent; border-color:transparent; }
+
+
+/* ═══════════════ Article page (nva-) — Noakhali Vision paper style ═══════════════
+   Same family as the news page: cream paper, serif headlines, mono labels, red accent.
+   Desktop: a sticky share rail beside the text. Phones: one share row. */
+.nva-page { --nva-bg:#FFFFFF; --nva-ink:#1a1917; --nva-accent:#0B4D35; --nva-lime:#55B52E; --nva-hover:#2E8B1A; --nva-mute:#8a877f; --nva-line:#e1e5e2; background:var(--nva-bg); color:var(--nva-ink); }
+.nva-accent { color:var(--nva-accent); } .nva-mute { color:var(--nva-mute); }
+.nva-mono { font-family:"Hind Siliguri", sans-serif; font-size:10.5px; line-height:1.4; letter-spacing:.09em; text-transform:uppercase; font-weight:500; }
+html[lang="bn"] .nva-mono { font-family:"Hind Siliguri", sans-serif; font-size:13px; letter-spacing:0; text-transform:none; }
+.nva-label { font-family:"Hind Siliguri", sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:600; margin:0; }
+html[lang="bn"] .nva-label { font-family:"Hind Siliguri", sans-serif; font-size:15px; letter-spacing:0; text-transform:none; font-weight:700; }
+
+.nva-progress { position:fixed; left:0; right:0; top:0; height:3px; z-index:2000; pointer-events:none; }
+.nva-progress i { display:block; height:100%; background:var(--nva-lime); transform-origin:left; transform:scaleX(0); }
+
+.nva-head { max-width:820px; }
+.nva-kicker { display:flex; flex-wrap:wrap; gap:4px 14px; font-weight:600; }
+.nva-kicker a { transition:color .2s; } .nva-kicker a:hover { color:var(--nva-hover); }
+.nva-title { margin:12px 0 18px; font-family:"Hind Siliguri", sans-serif; font-weight:500; font-size:clamp(32px, 5.2vw, 54px); line-height:1.1; letter-spacing:0; text-wrap:balance; }
+html[lang="bn"] .nva-title { font-family:"Hind Siliguri", sans-serif; font-weight:700; font-size:clamp(27px, 4.4vw, 44px); line-height:1.42; letter-spacing:0; }
+.nva-meta { display:flex; flex-wrap:wrap; align-items:center; gap:8px 18px; padding:12px 0; border-block:1px solid var(--nva-line); font-size:14px; }
+.nva-author { display:inline-flex; align-items:center; gap:9px; min-width:0; }
+.nva-author img { width:28px; height:28px; border-radius:50%; object-fit:cover; flex:none; }
+.nva-author strong { font-weight:700; }
+.nva-author:hover strong { color:var(--nva-hover); }
+
+/* hero */
+.nva-hero { margin:22px 0 0; }
+.nva-hero__frame { position:relative; overflow:hidden; display:grid; place-items:center; background:#e8ece8; padding:clamp(14px,3vw,28px); }
+.nva-hero__bg { position:absolute; inset:-30px; width:calc(100% + 60px); height:calc(100% + 60px); max-width:none; object-fit:cover; filter:blur(26px) saturate(1.15) brightness(.92); opacity:.7; transform:scale(1.05); }
+.nva-hero__img { position:relative; display:block; width:auto; max-width:100%; height:auto; max-height:min(78vh, 700px); object-fit:contain; box-shadow:0 18px 40px -14px #0008; }
+.nva-hero figcaption { padding-top:8px; text-align:right; }
+
+/* share */
+.nva-share--inline { display:flex; align-items:center; gap:12px; margin-top:14px; padding-bottom:14px; border-bottom:1px solid var(--nva-line); }
+.nva-share__label { flex:none; font:600 10.5px/1 "Hind Siliguri", sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--nva-mute); }
+html[lang="bn"] .nva-share__label { font-family:"Hind Siliguri", sans-serif; font-size:13px; letter-spacing:0; text-transform:none; }
+.nva-share--rail { display:none; }
+.nva .nv-byline-share { position:static; inset:auto; display:flex; flex-wrap:nowrap; align-items:center; gap:7px; margin:0; min-width:0; }
+.nva .nv-byline-share button { display:grid; place-items:center; flex:none; width:36px; height:36px; min-height:36px; padding:0; border:1px solid var(--nva-line); border-radius:50%; background:transparent; color:var(--nva-ink); cursor:pointer; transition:background-color .2s, color .2s, border-color .2s; }
+.nva .nv-byline-share button:hover { background:var(--nva-accent); border-color:var(--nva-accent); color:#fff; }
+.nva .nv-byline-share button:focus-visible { outline:2px solid var(--nva-lime); outline-offset:2px; }
+.nva-copied { margin-left:4px; font:600 11px/1 "Hind Siliguri", sans-serif; color:var(--nva-accent); white-space:nowrap; }
+@media (max-width:380px) { .nva .nv-byline-share { gap:5px; } .nva .nv-byline-share button { width:33px; height:33px; min-height:33px; } .nva-copied { display:none; } }
+
+/* text column with the sticky rail */
+.nva-grid { display:block; margin-top:6px; }
+@media (min-width:768px) {
+  .nva-share--inline { display:none; }
+  .nva-grid { display:grid; grid-template-columns:56px minmax(0, 760px); gap:0 28px; margin-top:26px; }
+  .nva-share--rail { display:block; position:sticky; top:92px; align-self:start; }
+  .nva-share--rail .nv-byline-share { flex-direction:column; gap:9px; }
+  .nva-share--rail .nva-copied { position:absolute; left:46px; top:calc(100% + 6px); margin:0; }
+}
+
+/* quick read (AI summary) */
+.nva-quick { margin:22px 0 0; padding:18px 20px 14px; background:#fff; border-top:3px solid var(--nva-ink); box-shadow:0 1px 0 var(--nva-line), 0 0 0 1px var(--nva-line) inset; }
+.nva-quick__head { display:flex; align-items:center; justify-content:space-between; font:600 10.5px/1 "Hind Siliguri", sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+html[lang="bn"] .nva-quick__head { font-family:"Hind Siliguri", sans-serif; font-size:15px; font-weight:700; letter-spacing:0; text-transform:none; }
+.nva-quick__head i { font-style:normal; padding:3px 7px; background:var(--nva-accent); color:#fff; font:700 10px/1 "Hind Siliguri", sans-serif; letter-spacing:.1em; }
+.nva-quick__lead { margin:12px 0 0; font-family:"Hind Siliguri", sans-serif; font-style:normal; font-size:21px; line-height:1.55; color:var(--nva-ink); }
+html[lang="bn"] .nva-quick__lead { font-family:"Hind Siliguri", sans-serif; font-size:17.5px; line-height:1.95; font-weight:500; }
+.nva-quick ol { list-style:none; margin:12px 0 0; padding:12px 0 0; border-top:1px dashed var(--nva-line); display:grid; gap:10px; }
+.nva-quick li { display:grid; grid-template-columns:28px 1fr; gap:6px; font-style:normal; font-size:15.5px; line-height:1.75; color:#34322d; }
+.nva-quick li b { font:600 11px/2.6 "Hind Siliguri", sans-serif; font-style:normal; color:var(--nva-accent); }
+.nva-quick__foot { margin-top:12px; font-size:11px; color:var(--nva-mute); }
+
+/* body */
+.nva .nva-body { margin-top:26px; }
+.nva .nva-body blockquote { margin:1.8em 0; padding:.2em 0 .2em 1.1em; background:none; border-left:3px solid var(--nva-lime); font-family:"Hind Siliguri", sans-serif; font-style:normal; font-size:1.28em; line-height:1.6; color:var(--nva-ink); }
+html[lang="bn"] .nva .nva-body blockquote { font-family:"Hind Siliguri", sans-serif; font-size:1.12em; line-height:1.9; }
+.nva-more { display:inline-flex; align-items:center; gap:10px; margin-top:30px; padding:12px 20px; border:1px solid var(--nva-ink); font:600 11px/1 "Hind Siliguri", sans-serif; letter-spacing:.12em; text-transform:uppercase; transition:background-color .2s, color .2s; }
+html[lang="bn"] .nva-more { font-family:"Hind Siliguri", sans-serif; font-size:14.5px; letter-spacing:0; text-transform:none; }
+.nva-more:hover { background:var(--nva-accent); border-color:var(--nva-accent); color:#fff; }
+
+/* related stories */
+.nva-rel { margin-top:54px; padding-top:18px; border-top:1px solid var(--nva-ink); }
+.nva-rel__grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); margin-top:18px; }
+.nva-card { display:block; padding:0 20px; border-left:1px solid var(--nva-line); }
+.nva-card:first-child { padding-left:0; border-left:0; }
+.nva-card:last-child { padding-right:0; }
+.nva-card__img { display:block; aspect-ratio:4/5; overflow:hidden; background:#e8ece8; }
+.nva-card__img img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+.nva-card:hover .nva-card__img img { transform:scale(1.04); }
+.nva-card__body { display:grid; gap:6px; margin-top:12px; }
+.nva-card__title { font-family:"Hind Siliguri", sans-serif; font-size:19px; line-height:1.3; font-weight:500; }
+html[lang="bn"] .nva-card__title { font-family:"Hind Siliguri", sans-serif; font-size:16.5px; line-height:1.6; font-weight:600; }
+.nva-card__title { transition:color .2s; } .nva-card:hover .nva-card__title { color:var(--nva-hover); }
+@media (max-width:640px) {
+  .nva-rel__grid { grid-template-columns:1fr; }
+  .nva-card, .nva-card:first-child, .nva-card:last-child { display:grid; grid-template-columns:84px minmax(0,1fr); gap:14px; padding:14px 0; border-left:0; border-bottom:1px solid var(--nva-line); }
+  .nva-card__body { margin-top:0; }
+}
+
+
+/* ═══ News page: main image is always 1200×1500 (4:5), never cropped ═══ */
+.nvx-img { object-fit: contain !important; object-position: center; }
+.nvx-hero__grid { display: grid; gap: 18px; }
+.nvx-hero__text { min-width: 0; }
+@media (min-width: 720px) {
+  .nvx-hero__grid { grid-template-columns: minmax(0, 46%) minmax(0, 1fr); gap: 28px; align-items: start; }
+  .nvx-hero__text { padding-top: 2px; }
+}
+
+/* category tabs a little larger; AI summary tag */
+.nvx-tab.nvx-mono { font-size: 11.5px; }
+.nvx[data-lang="bn"] .nvx-tab.nvx-mono { font-size: 14.5px; }
+.nvx-ai-tag { display:inline-block; margin-bottom:6px; padding:2px 8px; border:1px solid #c9ceca; border-radius:999px; font:700 11px/1.5 "Hind Siliguri", sans-serif; color:#0B4D35; background:#f1f5f2; }
+
+
+/* ═══ One typeface: Hind Siliguri everywhere. Regular (400) for text, 500/600 for small labels, bold (700) for headlines. ═══ */
+html, body, button, input, textarea, select { font-family: "Hind Siliguri", sans-serif; }
+body { font-weight: 400; }
+.nvx-serif, .nvx[data-lang="bn"] .nvx-serif, .nvx[data-lang="en"] .nvx-serif { font-family: "Hind Siliguri", sans-serif; font-weight: 700; }
+.nva-title, html[lang="bn"] .nva-title { font-family: "Hind Siliguri", sans-serif; font-weight: 700; }
+.nva-card__title, html[lang="bn"] .nva-card__title { font-weight: 700; }
+.nva-quick__lead, html[lang="bn"] .nva-quick__lead { font-style: normal; font-weight: 500; }
+.nv-prose, .nv-rte-ph { font-family: "Hind Siliguri", sans-serif; font-weight: 400; }
+
+
+/* ═══ Layout fixes ═══ */
+/* category tabs: last one fades out so it is clear the row scrolls */
+.nvx-tabs { -webkit-mask-image: linear-gradient(to right, #000 0, #000 90%, transparent 100%); mask-image: linear-gradient(to right, #000 0, #000 90%, transparent 100%); }
+.nvx-tab { padding-left: 10px; padding-right: 10px; }
+.nvx-tab::after { left: 10px; right: 10px; }
+/* related stories: three equal columns (so every picture has the same height); divider drawn between them */
+.nva-rel__grid { gap: 0 40px; }
+.nva-card, .nva-card:first-child, .nva-card:last-child { padding: 0; border-left: 0; position: relative; }
+.nva-card + .nva-card::before { content: ""; position: absolute; left: -20px; top: 0; bottom: 0; border-left: 1px solid var(--nva-line); }
+.nva-card__img { position: relative; }
+@media (max-width: 640px) {
+  .nva-rel__grid { gap: 0; }
+  .nva-card + .nva-card::before { display: none; }
+  .nva-card, .nva-card:first-child, .nva-card:last-child { padding: 14px 0; }
+}
+/* article body: a little tighter reading rhythm */
+.nv-prose { line-height: 1.85; }
+@media (min-width: 640px) { .nv-prose { line-height: 1.9; } }
+
+
+/* ═══ Article lead: picture frame hugs the picture (3px), AI summary box right under it ═══ */
+.nva-lead { width: fit-content; max-width: 100%; margin: 22px auto 0; }
+.nva-hero { margin: 0; }
+.nva-hero__frame { display: block; position: relative; overflow: visible; padding: 3px; background: #fff; border: 1px solid var(--nva-line); box-shadow: 0 14px 32px -18px rgba(11, 40, 28, .45); line-height: 0; }
+.nva-hero__bg { display: none; }
+.nva-hero__img { display: block; width: auto; max-width: 100%; height: auto; max-height: min(78vh, 700px); box-shadow: none; }
+
+
+/* ═══ Photo credit: sits ON the picture, bottom-left, white, never underlined ═══ */
+.nva-hero__frame::after { content: ""; position: absolute; left: 3px; right: 3px; bottom: 3px; height: 72px; max-height: 40%; pointer-events: none; background: linear-gradient(to top, rgba(4, 28, 19, .62), rgba(4, 28, 19, 0)); }
+.nva-credit { position: absolute; z-index: 1; left: 15px; bottom: 12px; max-width: calc(100% - 30px); margin: 0; padding: 0; color: #fff; font: 500 13px/1.3 "Hind Siliguri", sans-serif; letter-spacing: .01em; text-decoration: none; text-shadow: 0 1px 3px rgba(0, 0, 0, .55); }
+.nva-credit::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 7px; border-radius: 50%; background: var(--nva-lime); vertical-align: 1px; }
+
+/* ═══ Meta row: author · date · read-time ═══ */
+.nva-meta { gap: 8px 16px; }
+.nva-meta__info { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 0; min-width: 0; }
+.nva-meta__info > * { white-space: nowrap; color: #6a675f; }
+.nva-meta__info > * + *::before { content: "·"; margin: 0 9px; color: var(--nva-lime); font-weight: 700; }
+@media all {
+  .nva-meta { display: grid; gap: 7px; padding: 11px 0; }
+  .nva-meta__info > .nva-meta__upd { flex-basis: 100%; }
+  .nva-meta__info > .nva-meta__upd::before { content: none !important; }
+  .nva-meta__info > .nva-mono { font-size: 12.5px; }
+  html:not([lang="bn"]) .nva-meta__info > .nva-mono { font-size: 11.5px; letter-spacing: .05em; }
+  .nva-meta__info > * + *::before { margin: 0 7px; }
+  .nva-author { font-size: 13.5px; }
+}
+
+
+/* ═══ Photo heroes (About / Careers / Team / Partnership): no card, RGB gradient laid over the whole picture, text straight on top ═══ */
+.nv-hero-photo {
+  background-image: linear-gradient(115deg, rgb(7, 59, 42) 0%, rgba(11, 77, 53, .88) 38%, rgba(60, 150, 40, .74) 72%, rgba(85, 181, 46, .62) 100%), url(/hero-banner.jpg);
+  background-size: cover; background-position: center;
+  padding-top: clamp(28px, 6vw, 56px); padding-bottom: clamp(28px, 6vw, 56px);
+  color: #fff;
+}
+.nv-hero-photo__in { max-width: 760px; margin: 0 auto !important; padding: 0 !important; color: #fff; text-shadow: 0 2px 14px rgba(0, 20, 12, .35); }
+.nv-hero-photo__in h1, .nv-hero-photo__in p { color: #fff; }
+.nv-hero-pill { display: inline-block; color: #fff; background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .45); border-radius: 999px; text-shadow: none; }
+.nv-hero-btn { background: #fff; color: #0B4D35; text-shadow: none; transition: background-color .2s, color .2s; }
+.nv-hero-btn:hover { background: #55B52E; color: #06261a; }
+.nv-hero-glass.nv-hero-photo { border-width: 0; box-shadow: none; }
+
+
+/* ═══ Article title: smaller size, tighter line spacing ═══ */
+.nva-title { margin: 10px 0 14px; font-size: clamp(24px, 3.6vw, 36px); line-height: 1.2; }
+html[lang="bn"] .nva-title { font-size: clamp(21px, 3.2vw, 31px); line-height: 1.32; }
+
+
+/* ═══ AI summary box (under the picture, same width) ═══ */
+.nva-ai { position: relative; width: 0; min-width: 100%; margin: 16px 0 0; padding: 18px 20px 16px; overflow: hidden; border-radius: 16px; border: 1px solid #d7e8dd;
+  background: linear-gradient(135deg, #f6fbf7 0%, #eef8ee 55%, #e5f4dc 100%); box-shadow: 0 14px 30px -20px rgba(11, 77, 53, .55), 0 1px 0 rgba(255, 255, 255, .8) inset; }
+.nva-ai::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: linear-gradient(90deg, #073B2A 0%, #0B4D35 35%, #55B52E 100%); }
+.nva-ai::after { content: ""; position: absolute; right: -40px; top: -40px; width: 130px; height: 130px; border-radius: 50%; background: radial-gradient(circle, rgba(85, 181, 46, .22), rgba(85, 181, 46, 0) 70%); pointer-events: none; }
+.nva-ai__head { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; }
+.nva-ai__icon { display: inline-grid; place-items: center; flex: none; width: 30px; height: 30px; border-radius: 10px; color: #fff; background: linear-gradient(135deg, #0B4D35, #3C9A1F 70%, #55B52E); box-shadow: 0 6px 14px -6px rgba(11, 77, 53, .7); }
+.nva-ai__head b { font: 700 17px/1.2 "Hind Siliguri", sans-serif; color: #073B2A; letter-spacing: .005em; }
+.nva-ai__head i { margin-left: auto; font: 700 10.5px/1 "Hind Siliguri", sans-serif; font-style: normal; letter-spacing: .1em; color: #fff; padding: 5px 9px; border-radius: 999px; background: linear-gradient(90deg, #0B4D35, #3C9A1F); }
+.nva-ai__body { position: relative; z-index: 1; list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 9px; }
+.nva-ai__body li { position: relative; padding-left: 20px; font: 400 16px/1.8 "Hind Siliguri", sans-serif; color: #1c2a23; }
+.nva-ai__body li::before { content: ""; position: absolute; left: 2px; top: .78em; width: 7px; height: 7px; border-radius: 50%; background: linear-gradient(135deg, #0B4D35, #55B52E); box-shadow: 0 0 0 3px rgba(85, 181, 46, .18); }
+.nva-ai__foot { position: relative; z-index: 1; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(11, 77, 53, .14); font: 500 12px/1.4 "Hind Siliguri", sans-serif; color: #4d6a5b; }
+@media (max-width: 480px) { .nva-ai { padding: 16px 16px 14px; border-radius: 14px; } .nva-ai__body li { font-size: 15.5px; } }
+
+
+/* ═══ One column: title, meta, AI summary, story, gallery, share and ad are all exactly as wide as the main picture ═══ */
+.nva-col { width: fit-content; min-width: min(100%, 360px); max-width: 100%; margin: 0 auto; }
+.nva-col > :not(.nva-lead) { width: 0; min-width: 100%; max-width: none; }
+.nva-col > .nva-lead { width: auto; max-width: none; margin: 22px 0 0; }
+.nva-col .nva-head { max-width: none; }
+.nva-col .nva-title { font-size: clamp(22px, 3.4vw, 30px); }
+html[lang="bn"] .nva-col .nva-title { font-size: clamp(21px, 3.2vw, 28px); }
+
+/* share: row under the story by default; a sticky rail beside the column only where there is room (wide desktop) */
+.nva-grid { display: block; grid-template-columns: none; position: relative; margin-top: 6px; }
+.nva-share--inline { display: flex; margin-top: 30px; padding: 16px 0 0; border-top: 1px solid var(--nva-line); border-bottom: 0; }
+.nva-share--rail { display: none; }
+@media (min-width: 1280px) {
+  .nva-share--inline { display: none; }
+  .nva-share--rail { display: block; position: absolute; right: calc(100% + 12px); top: 0; bottom: 0; width: 38px; align-self: auto; }
+  .nva .nva-share--rail .nv-byline-share { position: sticky; top: 92px; flex-direction: column; gap: 9px; }
+  .nva-share--rail .nva-copied { position: absolute; left: 0; top: calc(100% + 6px); margin: 0; }
+}

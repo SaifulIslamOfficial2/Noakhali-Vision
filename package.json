@@ -1,0 +1,39 @@
+{
+  "name": "noakhali-vision",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-all.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev:api": "node dev-api.mjs",
+    "test:api": "node tests/run-api-tests.mjs",
+    "test:seo": "node tests/seo.test.mjs",
+    "test:cloudinary": "node tests/cloudinary.test.mjs",
+    "test:ai": "node tests/ai-summary.test.mjs && node tests/gemini.test.mjs",
+    "test:newsletter": "node tests/newsletter.test.mjs",
+    "backfill:summaries": "node --env-file=.env.local scripts/backfill-summaries.mjs",
+    "migrate:images": "node --env-file=.env.local scripts/migrate-images-to-cloudinary.mjs",
+    "dev:all": "node dev-all.mjs",
+    "dev:frontend": "vite"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@vitejs/plugin-react": "^6.2.1",
+    "lucide-react": "^0.468.0",
+    "mongodb": "^7.7.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.0.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "vite": "^8.3.6"
+  },
+  "engines": {
+    "node": ">=22.12 <25"
+  }
+}
